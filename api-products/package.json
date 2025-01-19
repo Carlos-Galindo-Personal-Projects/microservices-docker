@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "migrate": "prisma migrate dev && npm run seed",
     "seed": "node prisma/seed.js",
-    "start": "node src/server.js",
+    "start": "npm run build && npx prisma migrate dev && npm run seed && node src/server.js",
     "build": "tsc"
   },
   "author": "Carlos Galindo",
