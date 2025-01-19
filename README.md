@@ -18,8 +18,57 @@
 <h3>Clonar el repositorio</h3>
 
       git clone https://github.com/Carlos-Galindo-Personal-Projects/microservices-docker.git
-<h3>Navegar a microservices-docker y configurar las variables de entorno
+<h3>Navegar a microservices-docker y configurar las variables de entorno</h3>
 <pre><code>cd ./microservices-docker</code></pre>
+
+<code> 
+services:
+  users:
+    build: ./api-users
+    ports:
+      - "3001:3001"
+    links:
+      - postgres-database
+    environment:
+      - PORT=3001
+      - JWT_SECRET=SUPER_SECRET_KEY
+      - FRONTEND_URL=https://localhost:3003
+      - DATABASE_URL=postgresql://postgres:POSTGRES_PASSWORD@postgres-database:5432/USERS_DATABASE_NAME?schema=public
+  products:
+    build: ./api-products
+    ports:
+      - "3002:3002"
+    links:
+      - postgres-database
+    environment:
+      - PORT=3002
+      - FRONTEND_URL=https://localhost:3003
+      - DATABASE_URL=postgresql://postgres:POSTGRES_PASSWORD@postgres-database:5432/PRODUCTS_DATABASE_NAME?schema=public
+  gateway:
+    build: ./api-gateway
+    ports:
+      - "3000:3000"
+    links:
+      - users
+      - products
+    environment:
+      - PORT=3000
+      - JWT_SECRET=SUPER_SECRET_KEY
+      - FRONTEND_URL=https://localhost:3003
+  postgres-database:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=POSTGRES_PASSWORD
+    volumes:
+      - postgres-database:/var/lib/postgresql/data
+
+volumes:
+  postgres-database:
+</code>
+
+<p> JWT_SECRET será la contraseña de los json web tokens, POSTGRES_PASSWORD la contraseña del usuario de la instancia POSTGRES, USERS_DATABASE_NAME el nombre de la base de datos para los usuarios y PRODUCTS_DATABASE_NAME el nombre de la base de datos para los productos</p>
   
 <h3>Navegar a api-gateway-frontend, instalar las dependencias, crear un archivo .env y ejecutarlo</h3>
 
