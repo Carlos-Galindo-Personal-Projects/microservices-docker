@@ -73,7 +73,7 @@ export default function AddProductForm({ categories }: { categories: ResponseCat
                             id="name"
                             type="text"
                             {...register("name")}
-                            placeholder="correo@correo.com"
+                            placeholder="Product Name"
                             className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-[#ffb300] focus:border-[#ffb300]"
                         />
                     </div>
